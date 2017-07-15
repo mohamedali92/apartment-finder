@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import yagmail
+import time
 
 
 # Scraper Settings
@@ -24,21 +25,27 @@ def sendEmails(users, listings):
     htmlForListings = generateHtmlForListing(listings)
     userEmails = [user["email"] for user in users]
     yag.send(to = userEmails, subject = 'New Listings Found', contents = [htmlForListings])
-    
-result = requests.get(
-    baseUrl + "/search/" + subArea + "/apa?hasPic=1&postedToday=1&searchNearby=1&min_bedrooms=3&max_bedrooms=3&availabilityMode=0")
-if result.status_code == 200:
-    soup = BeautifulSoup(result.content, "html.parser")
-    resultsList = soup.find_all("li", "result-row")
-    listings = []
-    for result in resultsList:
-        listingContent = result.find("a", "result-title hdrlnk")
-        listingTitle = listingContent.text
-        listingUrl = baseUrl + listingContent.get('href')
-        listings.append({"title": listingTitle, "url": listingUrl})
-    print (listings)
-    print(generateHtmlForListing(listings))
-    
-    if len(listings) > 0:
-        sendEmails(users, listings)
+
+def lookForListings():    
+    result = requests.get(
+        baseUrl + "/search/" + subArea + "/apa?hasPic=1&postedToday=1&searchNearby=1&min_bedrooms=3&max_bedrooms=3&availabilityMode=0")
+    if result.status_code == 200:
+        soup = BeautifulSoup(result.content, "html.parser")
+        resultsList = soup.find_all("li", "result-row")
+        listings = []
+        for result in resultsList:
+            listingContent = result.find("a", "result-title hdrlnk")
+            listingTitle = listingContent.text
+            listingUrl = baseUrl + listingContent.get('href')
+            listings.append({"title": listingTitle, "url": listingUrl})
+        print (listings)
+        print(generateHtmlForListing(listings))
+        
+        if len(listings) > 0:
+            sendEmails(users, listings)
+
+while True:
+    lookForListings()
+    time.sleep(60)
+
 
