@@ -1,4 +1,5 @@
 FROM python:3
-ADD scraper.py /
+ADD . /myapp
+WORKDIR /myapp
 RUN pip install -r requirements.txt
-CMD [ "python", "./scraper.py"  
+CMD [ "python", "scraper.py"  
