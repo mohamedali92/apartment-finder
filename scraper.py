@@ -10,7 +10,9 @@ subArea = "rch"
 baseUrl = "https://" + area + ".craigslist.ca"
 
 #users
-users = [{"name": "Mohamed", "email": "mohamed.ali@alumni.ubc.ca"}]
+users = [{"name": "Mohamed", "email": "mohamed.ali@alumni.ubc.ca"},
+         {"name": "Nabila", "email": "nabila_emam1234@yahoo.com"}
+         {"name": "Hassanein", "email": "hassanin79@hotmail.com"}]
 yag = yagmail.SMTP('mohammedali.saisdubai@gmail.com', '16julyfriday')
 
 
