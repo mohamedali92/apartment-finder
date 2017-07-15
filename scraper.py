@@ -46,6 +46,6 @@ def lookForListings():
 
 while True:
     lookForListings()
-    time.sleep(60)
+    time.sleep(14400)
 
 
