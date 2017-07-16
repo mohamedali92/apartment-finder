@@ -79,6 +79,6 @@ while True:
     lookForListings()
     numberOfScrapes += 1
     print("Scrape: ", numberOfScrapes)
-    time.sleep(300)
+    time.sleep(3600)
 
 
