@@ -26,11 +26,7 @@ smtp_password = 'Aj0uTg5fxjYW3wIRm3QhP37KElOjAyGaN+45Dyv8mivq'
 smtp_port = '587'
 smtp_do_tls = True
 
-s = smtplib.SMTP(
-    host=smtp_server,
-    port=smtp_port,
-    timeout=10
-)
+
 
 
 def generateHtmlForListing(listings):
@@ -41,6 +37,11 @@ def generateHtmlForListing(listings):
     return htmlString
 
 def sendEmails(users, listings):
+    s = smtplib.SMTP(
+        host=smtp_server,
+        port=smtp_port,
+        timeout=10
+    )
     s.starttls()
     s.ehlo()
     s.login(smtp_username, smtp_password)
