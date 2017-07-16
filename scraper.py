@@ -15,9 +15,11 @@ subArea = "rch"
 baseUrl = "https://" + area + ".craigslist.ca"
 
 #users
-users = [{"name": "Mohamed", "email": "mohamed.ali@alumni.ubc.ca"},
-         {"name": "Nabila", "email": "nabila_emam1234@yahoo.com"},
-         {"name": "Hassanein", "email": "hassanin79@hotmail.com"}]
+# users = [{"name": "Mohamed", "email": "mohamed.ali@alumni.ubc.ca"},
+#          {"name": "Nabila", "email": "nabila_emam1234@yahoo.com"},
+#          {"name": "Hassanein", "email": "hassanin79@hotmail.com"}]
+
+users = [{"name": "Mohamed", "email": "mohamed.ali@alumni.ubc.ca"}]
 
 #AWS SMTP settings
 smtp_server = 'email-smtp.us-west-2.amazonaws.com'
@@ -77,6 +79,6 @@ while True:
     lookForListings()
     numberOfScrapes += 1
     print("Scrape: ", numberOfScrapes)
-    time.sleep(600)
+    time.sleep(300)
 
 
