@@ -18,8 +18,8 @@ baseUrl = "https://" + area + ".craigslist.ca"
 users = [{"name": "Mohamed", "email": "mohamed.ali@alumni.ubc.ca"},
          {"name": "Nabila", "email": "nabila_emam1234@yahoo.com"},
          {"name": "Hassanein", "email": "hassanin79@hotmail.com"}]
-#yag = yagmail.SMTP('mohammedali.saisdubai@gmail.com', '16julyfriday')
 
+#AWS SMTP settings
 smtp_server = 'email-smtp.us-west-2.amazonaws.com'
 smtp_username = 'AKIAJOHYW36LMJJHE4RA'
 smtp_password = 'Aj0uTg5fxjYW3wIRm3QhP37KElOjAyGaN+45Dyv8mivq'
@@ -31,12 +31,6 @@ s = smtplib.SMTP(
     port=smtp_port,
     timeout=10
 )
-# s.set_debuglevel(1)
-s.starttls()
-s.ehlo()
-s.login(smtp_username, smtp_password)
-me = "mohammedali.saisdubai@gmail.com"
-
 
 
 def generateHtmlForListing(listings):
@@ -47,9 +41,13 @@ def generateHtmlForListing(listings):
     return htmlString
 
 def sendEmails(users, listings):
+    s.starttls()
+    s.ehlo()
+    s.login(smtp_username, smtp_password)
+    me = "mohammedali.saisdubai@gmail.com"
     htmlForListings = generateHtmlForListing(listings)
+
     userEmails = [user["email"] for user in users]
-    # yag.send(to = userEmails, subject = 'New Listings Found', contents = [htmlForListings])
     msg = MIMEMultipart('alternative')
     msg['Subject'] = "New Listings Found"
     msg['From'] = me
