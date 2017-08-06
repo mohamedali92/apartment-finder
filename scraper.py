@@ -1,6 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-#import yagmail
 import time
 import smtplib
 
@@ -8,28 +7,27 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 
-# Scraper Settings
+#Specify Area and SubArea
 numberOfScrapes = 0
 area = "vancouver"
 subArea = "rch"
 baseUrl = "https://" + area + ".craigslist.ca"
 
-#users
-# users = [{"name": "Mohamed", "email": "mohamed.ali@alumni.ubc.ca"},
-#          {"name": "Nabila", "email": "nabila_emam1234@yahoo.com"},
-#          {"name": "Hassanein", "email": "hassanin79@hotmail.com"}]
+#Add users to be notified
+users = [{"name": "", "email": ""}]
 
-users = [{"name": "Mohamed", "email": "mohamed.ali@alumni.ubc.ca"}]
+#Supply SMTP settings
+smtpServer = ''
+smtpUsername = ''
+smtpPassword = ''
+smtpPort = '587'
+smtpTls = True
 
-#AWS SMTP settings
-smtp_server = 'email-smtp.us-west-2.amazonaws.com'
-smtp_username = 'AKIAJOHYW36LMJJHE4RA'
-smtp_password = 'Aj0uTg5fxjYW3wIRm3QhP37KElOjAyGaN+45Dyv8mivq'
-smtp_port = '587'
-smtp_do_tls = True
+#Specify Sender
+sender = ""
 
-
-
+#Time in Seconds
+timeBetweenScrapes = 3600
 
 def generateHtmlForListing(listings):
     htmlString = ''
@@ -40,26 +38,28 @@ def generateHtmlForListing(listings):
 
 def sendEmails(users, listings):
     s = smtplib.SMTP(
-        host=smtp_server,
-        port=smtp_port,
+        host=smtpServer,
+        port=smtpPort,
         timeout=10
     )
     s.starttls()
     s.ehlo()
-    s.login(smtp_username, smtp_password)
-    me = "mohammedali.saisdubai@gmail.com"
+    s.login(smtpUsername, smtpPassword)
+    
     htmlForListings = generateHtmlForListing(listings)
-
     userEmails = [user["email"] for user in users]
     msg = MIMEMultipart('alternative')
     msg['Subject'] = "New Listings Found"
-    msg['From'] = me
+    msg['From'] = sender
     msg['To'] = ", ".join(userEmails)
     msg.attach(MIMEText(htmlForListings, 'html'))
     
-    s.sendmail(me, userEmails, msg.as_string())
+    s.sendmail(sender, userEmails, msg.as_string())
     s.quit()
-def lookForListings():    
+
+def lookForListings():
+    
+    #Modify URL based on required critera
     result = requests.get(
         baseUrl + "/search/" + subArea + "/apa?hasPic=1&postedToday=1&searchNearby=1&min_bedrooms=3&max_bedrooms=3&availabilityMode=0")
     if result.status_code == 200:
